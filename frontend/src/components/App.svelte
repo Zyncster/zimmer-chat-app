@@ -19,6 +19,6 @@
         <Logout {user} onLogout={handleLogout} />
         <Chat {user} />
     {:else}
-        <Login on:login={e => user = e.detail} />
+        <Login ={bind:user} />
     {/if}
 </main>
