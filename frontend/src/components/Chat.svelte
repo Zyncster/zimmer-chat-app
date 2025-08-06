@@ -97,19 +97,16 @@
     });
 
     function formatTime(timestamp) {
-        if (!timestamp) return '[no time]';
+        if (!timestamp || typeof timestamp !== 'string') return '[no time]';
+        
+        const parsed = Date.parse(timestamp);
 
-        try {
-            const parsed = new Date(timestamp);
-            if (isNaN(parsed.getTime())) return '[invalid time]';
+        if (isNaN(parsed)) return '[invalid time]';
 
-            return parsed.toLocaleString('en_US', {
-                dateStyle: 'short',
-                timeStyle: 'short',
-            });
-        } catch {
-            return '[bad date]';
-        }
+        return new Date(parsed).toLocaleString('en-US', {
+            dateStyle: 'short',
+            timeStyle: 'short'
+        })
     }
     
 </script>
