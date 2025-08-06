@@ -14,6 +14,7 @@
         loading = true;
         error = '';
         try {
+        
             const response = await pb.collection('messages').getFullList({
                 sort: 'created',
                 expand: 'user'
@@ -29,6 +30,7 @@
     }
 
     async function sendMessage() {
+        console.log("Sending message as:", user);
         if (!newMessage.trim()) return;
         sending = true;
         try {
