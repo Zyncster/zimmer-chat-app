@@ -17,7 +17,7 @@
         
             const response = await pb.collection('messages').getFullList({
                 sort: 'created',
-                expand: 'user'
+                expand: 'users'
             });
             messages = response;
             console.log('✅ Messages loaded:', response);
@@ -77,7 +77,7 @@
                 try {
                     console.log('Fetching message from ID:', e.record.id);
                     const fullMessage = await pb.collection('messages').getOne(e.record.id, {
-                        expand: 'user'
+                        expand: 'users'
                     });
 
                     messages = [...messages, fullMessage];
@@ -124,10 +124,10 @@
     {:else}
         <div class="messages">
             {#each messages as msg}
-                <div class="message {msg.expand?.user?.email === pb.authStore.model.email ? 'sent' : 'received'}">
+                <div class="message {msg.expand?.users?.email === pb.authStore.model.email ? 'sent' : 'received'}">
                     <div class="bubble">
                         <div class="meta">
-                            <span class ="email">{msg.expand?.user?.email || 'Unknown'}</span>
+                            <span class ="email">{msg.expand?.users?.email || 'Unknown'}</span>
                             <span class ="timestamp">{formatTime(msg.created)}</span>
                         </div>
                         <p>{msg.text}</p>
