@@ -113,7 +113,7 @@
             {#each messages as msg}
                 <div class="message {msg.expand?.user?.email === user.email ? 'sent' : 'received'}">
                     <div class="bubble">
-                        <div calss="meta">
+                        <div class="meta">
                             <span class ="email">{msg.expand?.user?.email || 'Unknown'}</span>
                             <span class = "timestamp">{formatTime(msg.created)}</span>
                         </div>
