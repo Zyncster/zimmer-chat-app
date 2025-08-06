@@ -13,7 +13,7 @@
 </script>
 
 <main>
-    <h1>Zach's Chat App</h1>
+    <h1>ZepChat</h1>
 
     {#if user}
         <Logout {user} onLogout={handleLogout} />
