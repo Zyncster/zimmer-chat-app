@@ -30,22 +30,30 @@
     }
 
     async function sendMessage() {
-        console.log("Sending message as:", user);
-        if (!newMessage.trim()) return;
-        sending = true;
-        try {
-            await pb.collection('messages').create({
-                text: newMessage,
-                user: user.id
-            });
-            newMessage = '';
-            loadMessages();
-        } catch (err) {
-            error = `❌ Failed to send message: ${err.message}`;
-        } finally {
-            sending = false;
-        }
+    if (!newMessage.trim()) return;
+    sending = true;
+
+    console.log('🔄 Sending message:', newMessage);
+    console.log('🧾 User:', user);
+
+    try {
+        const data = {
+            text: newMessage,
+            user: user?.id || '🚨 MISSING USER ID'
+        };
+        console.log('📤 Payload to PocketBase:', data);
+
+        await pb.collection('messages').create(data);
+
+        newMessage = '';
+        loadMessages();
+    } catch (err) {
+        console.error('🚫 PocketBase error:', err.response || err);
+        error = `❌ Failed to send message: ${err.message}`;
+    } finally {
+        sending = false;
     }
+}
 
     $: if (messages.length && bottomRef) {
         bottomRef.scrollIntoView({ behavior: 'smooth' });
