@@ -1,7 +1,6 @@
 <script>
     import pb from '../lib/pocketbase.js';
 
-    export let user;
 
     let messages = [];
     let error = '';
@@ -33,22 +32,25 @@
     if (!newMessage.trim()) return;
     sending = true;
 
-    console.log('🔄 Sending message:', newMessage);
-    console.log('🧾 User:', user);
+    const currentUser = pb.authStore.model;
+
+    if (!currentUser || !currentUser.id) {
+        error = '❌ User not authenticated or missing ID.';
+        sending = false;
+        return;
+    }
+
+    console.log("Sending message from user:", currentUser);
 
     try {
-        const data = {
+        await pb.collection('messages').create({
             text: newMessage,
-            user: user?.id || '🚨 MISSING USER ID'
-        };
-        console.log('📤 Payload to PocketBase:', data);
-
-        await pb.collection('messages').create(data);
-
+            user: currentUser.id
+        });
         newMessage = '';
         loadMessages();
     } catch (err) {
-        console.error('🚫 PocketBase error:', err.response || err);
+        console.error('❌ Failed to send message:', err.response || err);
         error = `❌ Failed to send message: ${err.message}`;
     } finally {
         sending = false;
@@ -112,7 +114,7 @@
 </script>
 
 <section class="chat">
-    <h2>welcome, {user.email}</h2>
+    <h2>welcome, {pb.authStore.model.email}</h2>
 
     {#if loading}
         <p>Loading messages...</p>
@@ -121,7 +123,7 @@
     {:else}
         <div class="messages">
             {#each messages as msg}
-                <div class="message {msg.expand?.user?.email === user.email ? 'sent' : 'received'}">
+                <div class="message {msg.expand?.user?.email === pb.authStore.model.email ? 'sent' : 'received'}">
                     <div class="bubble">
                         <div class="meta">
                             <span class ="email">{msg.expand?.user?.email || 'Unknown'}</span>
