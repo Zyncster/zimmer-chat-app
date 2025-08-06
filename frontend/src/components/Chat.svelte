@@ -46,7 +46,7 @@
     try {
         await pb.collection('messages').create({
             text: newMessage,
-            user: currentUser.id
+            users: currentUser.id
         });
         newMessage = '';
         loadMessages();
