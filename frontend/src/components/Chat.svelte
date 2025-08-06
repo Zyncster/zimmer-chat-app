@@ -1,6 +1,7 @@
 <script>
     import pb from '../lib/pocketbase.js';
 
+    export let user;
 
     let messages = [];
     let error = '';
