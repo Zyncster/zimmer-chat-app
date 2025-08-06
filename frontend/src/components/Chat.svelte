@@ -101,7 +101,7 @@
 
         try {
             const parsed = new Date(timestamp);
-            if (isNaN(parsed)) return '[invalid time]';
+            if (isNaN(parsed.getTime())) return '[invalid time]';
 
             return parsed.toLocaleString('en_US', {
                 dateStyle: 'short',
@@ -128,7 +128,7 @@
                     <div class="bubble">
                         <div class="meta">
                             <span class ="email">{msg.expand?.user?.email || 'Unknown'}</span>
-                            <span class = "timestamp">{formatTime(msg.created)}</span>
+                            <span class ="timestamp">{formatTime(msg.created)}</span>
                         </div>
                         <p>{msg.text}</p>
                     </div>
