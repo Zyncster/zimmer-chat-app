@@ -92,7 +92,7 @@
             const parsed = new Date(timestamp);
             if (isNaN(parsed)) return '[invalid time]';
 
-            return parsed.toLocaleString(undefined, {
+            return parsed.toLocaleString('en_US', {
                 dateStyle: 'short',
                 timeStyle: 'short',
             });
